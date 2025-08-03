@@ -1,3 +1,6 @@
 module.exports = {
-  preset: 'react-native',
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+  roots: ['<rootDir>'],
+  testPathIgnorePatterns: ['/node_modules/', '/__tests__/mocks/'],
 };
