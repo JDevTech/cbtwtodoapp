@@ -51,11 +51,11 @@ export const useTasks = (groupId: string) => {
     }
   };
 
-  const updateTask = async (id: string, task: TaskEntity) => {
+  const updateTask = async (id: string, task: Partial<TaskEntity>) => {
     setLoading(true);
     try {
       await updateTaskUseCase.execute(id, task);
-      setTasks(prev => prev.map(t => (t.id === id ? task : t)));
+      setTasks(prev => prev.map(t => (t.id === id ? { ...t, ...task } : t)));
     } catch (error) {
       console.error('Error updating task:', error);
     } finally {

@@ -1,57 +1,62 @@
 import React from 'react';
+import styled from 'styled-components/native';
+import CustomButton from '../common/CustomButton';
 import { useForm, Controller } from 'react-hook-form';
 import { CreateTaskEntity } from '@/domain/entities/create-task.entity';
-import { View, TextInput, Button, StyleSheet, Text } from 'react-native';
 
 interface CreateTaskFormProps {
+  loading: boolean;
   onSubmit: (data: CreateTaskEntity) => void;
 }
 
-export const CreateTaskForm = ({ onSubmit }: CreateTaskFormProps) => {
+const CreateTaskForm = ({ onSubmit, loading }: CreateTaskFormProps) => {
   const { control, handleSubmit } = useForm<CreateTaskEntity>();
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.label}>Título de la tarea</Text>
+    <CreateTaskFormContainer>
+      <CustomTextInputLabel>Task's Title</CustomTextInputLabel>
       <Controller
         control={control}
         name="title"
-        rules={{ required: 'El título es obligatorio' }}
+        rules={{ required: 'The title is required' }}
         render={({ field: { onChange, value }, fieldState: { error } }) => (
           <>
-            <TextInput
-              style={styles.input}
-              placeholder="Nombre de la tarea"
-              value={value}
-              onChangeText={onChange}
-            />
-            {error && <Text style={styles.error}>{error.message}</Text>}
+            <CustomTextInput value={value} onChangeText={onChange} />
+            {error && (
+              <CustomTextInputError>{error.message}</CustomTextInputError>
+            )}
           </>
         )}
       />
 
-      <Button title="Agregar Tarea" onPress={handleSubmit(onSubmit)} />
-    </View>
+      <CustomButton
+        disabled={loading}
+        onPress={handleSubmit(onSubmit)}
+        title={loading ? 'Creating...' : 'Create Task'}
+      />
+    </CreateTaskFormContainer>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    marginVertical: 20,
-    gap: 10,
-  },
-  label: {
-    fontWeight: 'bold',
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 6,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-  },
-  error: {
-    color: 'red',
-    fontSize: 12,
-  },
-});
+const CreateTaskFormContainer = styled.View`
+  flex: 1;
+  padding: 20px;
+`;
+
+const CustomTextInputLabel = styled.Text`
+  margin-bottom: 8px;
+`;
+
+const CustomTextInput = styled.TextInput`
+  border-width: 1px;
+  border-color: #ccc;
+  border-radius: 4px;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+`;
+
+const CustomTextInputError = styled.Text`
+  color: red;
+`;
+
+export default CreateTaskForm;

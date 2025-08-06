@@ -5,10 +5,18 @@ import LinearGradient from 'react-native-linear-gradient';
 type TaskCardProps = {
   title: string;
   createdAt: Date;
+  completed: boolean;
   onPress: () => void;
+  onDelete: () => void;
 };
 
-const TaskCard = ({ title, createdAt, onPress }: TaskCardProps) => {
+const TaskCard = ({
+  title,
+  createdAt,
+  completed,
+  onPress,
+  onDelete,
+}: TaskCardProps) => {
   const formatDate = (dateToFormat: Date) => {
     let dateObj: Date;
     if (dateToFormat instanceof Date) {
@@ -38,7 +46,13 @@ const TaskCard = ({ title, createdAt, onPress }: TaskCardProps) => {
       <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
         <TaskCardTitle>{title}</TaskCardTitle>
         <TaskCardCreatedAt>{formatDate(createdAt)}</TaskCardCreatedAt>
+        <TaskCardCheckbox checked={completed}>
+          {completed && <TaskCardCheckboxIcon>✓</TaskCardCheckboxIcon>}
+        </TaskCardCheckbox>
       </TouchableOpacity>
+      <DeleteButton onPress={onDelete}>
+        <DeleteButtonText>X Delete</DeleteButtonText>
+      </DeleteButton>
     </TaskCardContainer>
   );
 };
@@ -55,9 +69,37 @@ const TaskCardTitle = styled.Text`
   color: #fff;
 `;
 
+const TaskCardCheckbox = styled.View<{ checked: boolean }>`
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  border-radius: 12px;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: 0px;
+`;
+
+const TaskCardCheckboxIcon = styled.Text`
+  color: #3de9f5;
+  font-size: 16px;
+`;
+
 const TaskCardCreatedAt = styled.Text`
   font-size: 14px;
   color: #fff;
+`;
+
+const DeleteButton = styled.TouchableOpacity`
+  margin-top: 8px;
+`;
+
+const DeleteButtonText = styled.Text`
+  color: white;
+  font-size: 16px;
+  text-align: center;
 `;
 
 export default TaskCard;

@@ -3,8 +3,8 @@ import { RootStackParamList } from './types';
 import TasksListScreen from '../screens/task/TaskListScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import CreateTaskScreen from '../screens/task/CreateTaskScreen';
-import TaskGroupsListScreen from '../screens/task-group/TaskGroupsListScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import TaskGroupsListScreen from '../screens/task-group/TaskGroupsListScreen';
 import CreateTaskGroupScreen from '../screens/task-group/CreateTaskGroupScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -12,8 +12,12 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const AppNavigator = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="TaskGroups" component={TaskGroupsListScreen} />
+      <Stack.Navigator initialRouteName="TaskGroups">
+        <Stack.Screen
+          name="TaskGroups"
+          options={{ title: 'Home' }}
+          component={TaskGroupsListScreen}
+        />
         <Stack.Screen
           name="CreateTaskGroup"
           component={CreateTaskGroupScreen}
@@ -22,7 +26,6 @@ const AppNavigator = () => {
 
         <Stack.Screen name="TasksList" component={TasksListScreen} />
         <Stack.Screen name="CreateTask" component={CreateTaskScreen} />
-        {/* Add other screens here as needed */}
       </Stack.Navigator>
     </NavigationContainer>
   );

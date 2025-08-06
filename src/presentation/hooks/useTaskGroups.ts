@@ -52,12 +52,14 @@ export const useTaskGroups = () => {
 
   const updateTaskGroup = async (
     groupId: string,
-    taskGroup: TaskGroupEntity,
+    taskGroup: Partial<TaskGroupEntity>,
   ) => {
     setLoading(true);
     try {
       await updateTaskGroupUseCase.execute(groupId, taskGroup);
-      setGroups(prev => prev.map(g => (g.id === groupId ? taskGroup : g)));
+      setGroups(prev =>
+        prev.map(g => (g.id === groupId ? { ...g, ...taskGroup } : g)),
+      );
     } catch (error) {
       console.error('Error updating task group:', error);
     } finally {
