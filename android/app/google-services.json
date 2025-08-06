@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "674481162280",
+    "project_id": "cbtwtodoapp",
+    "storage_bucket": "cbtwtodoapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:674481162280:android:dd237cf25b3d7a16418d1d",
+        "android_client_info": {
+          "package_name": "com.cbtwtodoapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgWVdLYCHgxJtvT-DT7m7Wn3RF5DXlm-s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

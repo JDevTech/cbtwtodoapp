@@ -1,18 +1,19 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+import { TaskGroupEntity } from '../../domain/entities/task-group.entity';
+import { CreateTaskGroupEntity } from '@/domain/entities/create-task-group.entity';
 import {
   createTaskGroupUseCase,
   updateTaskGroupUseCase,
   deleteTaskGroupUseCase,
   getAllTaskGroupsUseCase,
   getTaskGroupByIdUseCase,
-} from '../di/container';
-import { TaskGroupEntity } from '../domain/entities/task-group.entity';
+} from '../../infrastructure/di/container';
 
 export const useTaskGroups = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [groups, setGroups] = useState<TaskGroupEntity[]>([]);
 
-  const fetchTaskGroups = async () => {
+  const fetchTaskGroups = useCallback(async () => {
     setLoading(true);
     try {
       const result = await getAllTaskGroupsUseCase.execute();
@@ -22,7 +23,7 @@ export const useTaskGroups = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   const fetchTaskGroupById = async (id: string) => {
     setLoading(true);
@@ -37,7 +38,7 @@ export const useTaskGroups = () => {
     }
   };
 
-  const createTaskGroup = async (taskGroup: TaskGroupEntity) => {
+  const createTaskGroup = async (taskGroup: CreateTaskGroupEntity) => {
     setLoading(true);
     try {
       const newGroup = await createTaskGroupUseCase.execute(taskGroup);

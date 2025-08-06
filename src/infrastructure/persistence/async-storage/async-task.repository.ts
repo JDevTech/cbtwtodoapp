@@ -1,5 +1,7 @@
+import uuid from 'react-native-uuid';
 import { TaskEntity } from '../../../domain/entities/task.entity';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { CreateTaskEntity } from '@/domain/entities/create-task.entity';
 import { ITaskRepository } from '../../../domain/interfaces/task-repository.interface';
 
 const TASK_STORAGE_KEY = 'TASKS';
@@ -30,11 +32,16 @@ export class AsyncTaskRepository implements ITaskRepository {
     }
   }
 
-  async createTask(task: TaskEntity): Promise<TaskEntity> {
+  async createTask(task: CreateTaskEntity): Promise<TaskEntity> {
     const tasks = await this.getAllTasks();
-    tasks.push(task);
+    const newTask: TaskEntity = {
+      id: uuid.v4(),
+      createdAt: new Date(),
+      ...task,
+    };
+    tasks.push(newTask);
     await AsyncStorage.setItem(TASK_STORAGE_KEY, JSON.stringify(tasks));
-    return task;
+    return newTask;
   }
 
   private async getAllTasks(): Promise<TaskEntity[]> {

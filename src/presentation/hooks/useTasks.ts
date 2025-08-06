@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { TaskEntity } from '../domain/entities/task.entity';
+import { useCallback, useState } from 'react';
+import { TaskEntity } from '../../domain/entities/task.entity';
+import { CreateTaskEntity } from '@/domain/entities/create-task.entity';
 
 import {
   createTaskUseCase,
@@ -7,13 +8,13 @@ import {
   deleteTaskUseCase,
   getTaskByIdUseCase,
   getTasksByGroupIdUseCase,
-} from '../di/container';
+} from '../../infrastructure/di/container';
 
 export const useTasks = (groupId: string) => {
   const [loading, setLoading] = useState(false);
   const [tasks, setTasks] = useState<TaskEntity[]>([]);
 
-  const fetchTasks = async () => {
+  const fetchTasks = useCallback(async () => {
     setLoading(true);
     try {
       const result = await getTasksByGroupIdUseCase.execute(groupId);
@@ -23,7 +24,7 @@ export const useTasks = (groupId: string) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [groupId]);
 
   const fetchTaskById = async (taskId: string) => {
     setLoading(true);
@@ -38,7 +39,7 @@ export const useTasks = (groupId: string) => {
     }
   };
 
-  const createTask = async (task: TaskEntity) => {
+  const createTask = async (task: CreateTaskEntity) => {
     setLoading(true);
     try {
       const newTask = await createTaskUseCase.execute(task);

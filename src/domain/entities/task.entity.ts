@@ -3,4 +3,5 @@ export interface TaskEntity {
   title: string;
   groupId: string;
   completed: boolean;
+  createdAt: Date;
 }

@@ -1,5 +1,7 @@
+import uuid from 'react-native-uuid';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TaskGroupEntity } from '../../../domain/entities/task-group.entity';
+import { CreateTaskGroupEntity } from '@/domain/entities/create-task-group.entity';
 import { ITaskGroupRepository } from '../../../domain/interfaces/task-group-repository.interface';
 
 const GROUP_STORAGE_KEY = 'TASK_GROUPS';
@@ -19,11 +21,18 @@ export class AsyncTaskGroupRepository implements ITaskGroupRepository {
     );
   }
 
-  async createTaskGroup(group: TaskGroupEntity): Promise<TaskGroupEntity> {
+  async createTaskGroup(
+    group: CreateTaskGroupEntity,
+  ): Promise<TaskGroupEntity> {
     const groups = await this.getAllTaskGroups();
-    groups.push(group);
+    const newGroup: TaskGroupEntity = {
+      id: uuid.v4(),
+      createdAt: new Date(),
+      ...group,
+    };
+    groups.push(newGroup);
     await AsyncStorage.setItem(GROUP_STORAGE_KEY, JSON.stringify(groups));
-    return group;
+    return newGroup;
   }
 
   async getTaskGroupById(id: string): Promise<TaskGroupEntity | null> {

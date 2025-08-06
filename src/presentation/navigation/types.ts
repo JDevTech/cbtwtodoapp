@@ -1,4 +1,6 @@
 export type RootStackParamList = {
   TaskGroups: undefined;
-  TasksList: { groupId: string };
+  CreateTaskGroup: undefined;
+  TasksList: { groupId: string; groupTitle: string };
+  CreateTask: { groupId: string; groupTitle: string };
 };
